@@ -1,0 +1,6 @@
+"0","for (row in 1:nrow(gapminder)) {"
+"0","	# startsWith(str = country, pattern = ""B"", trim=FALSE, ignore.case=TRUE)"
+"0","	country <- gapminder[row, 'country']"
+"0","	"
+"0","	print(country)"
+"0","}"

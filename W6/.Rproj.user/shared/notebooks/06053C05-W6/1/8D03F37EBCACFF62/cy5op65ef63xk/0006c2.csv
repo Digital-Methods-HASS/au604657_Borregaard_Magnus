@@ -1,0 +1,11 @@
+"0","for (row in 1:nrow(gapminder)) {"
+"0","	# startsWith(str = country, pattern = ""B"", trim=FALSE, ignore.case=TRUE)"
+"0","	country <- gapminder[gapminder[row, 'country']]"
+"0","	"
+"0","	print(country)"
+"0","}"
+"2","Fejl: Must subset columns with a valid subscript vector.
+[31mx[39m Subscript `gapminder[row, ""country""]` has the wrong type `tbl_df<country:factor<bf6dc>>`.
+[34mi[39m It must be logical, numeric, or character.
+[90mRun `rlang::last_error()` to see where the error occurred.[39m
+"

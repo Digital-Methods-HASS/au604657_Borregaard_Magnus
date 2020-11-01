@@ -1,0 +1,74 @@
+---
+title: "W6 Assignment"
+output: html_notebook
+---
+1. Define a defensive function that calculates the Gross Domestic Product of a nation from the data available in the gapminder dataset. Using that function, calculate the GDP of Denmark in the following years: 1967, 1977, 1987, 1997, 2007, and 2017.
+
+```{r}
+library(gapminder)
+library(tidyverse)
+```
+
+```{r}
+calcGDP <- function(selected_year = NULL, selected_country = NULL) {
+	# Make sure we do not exit out of our script just because of a silly missing record:
+	tryCatch({
+		# Make sure the year is in the dataset and that country is a string:
+		stopifnot(selected_year %in% gapminder$year | is.character(selected_country))
+	
+		gdp_df <- gapminder %>%
+			filter(country == selected_country & year == selected_year)
+	
+		# Make sure we are only getting one record:
+		stopifnot(nrow(gdp_df) == 1)
+	
+		return(gdp_df$pop * gdp_df$gdpPercap)
+	},
+	error = function(msg) {
+		print(msg)
+		return(NA)
+	})
+}
+
+# Check all of the years:
+for (year in c(1967, 1977, 1987, 1997, 2007, 2017)) {
+	print(str_c(year, ': ', round(calcGDP(year, 'Denmark'))))
+}
+```
+As expected, we get an error on 2017, since the year is not present in the records. We can verify this by looking at the years present in the gapminder dataset:
+```{r}
+2017 %in% distinct(gapminder, year)
+```
+2. Write a script that loops over each country in the gapminder dataset, tests whether the country starts with a ‘B’ , and print out whether the life expectancy is smaller than 50, between 50 and 70, or greater than 70.
+```{r}
+# We we loop through all indices of gapminder's rows:
+for (index in 1:nrow(gapminder)) {
+	# And select the actual row with the given index:
+	gapminder_record <- gapminder[index,]
+   
+	# Isolate the row's values of the given columns:
+  country <- as.character(gapminder_record[['country']])
+  lifeExp <- gapminder_record[['lifeExp']]
+  year <- gapminder_record[['year']]
+  
+  # We don't want to repeat ourselves too much:
+  base_message <- paste('The life expectancy of', country, 'in the year', year, 'is')
+  
+  
+  if ((startsWith(country, 'B'))) {
+  	if (lifeExp < 50) {
+    	print(paste(base_message, 'less than 50 years'))
+  		
+    } else if (lifeExp <= 70) {
+    	print(paste(base_message, 'between 50 and 70 years'))
+   
+    } else {
+    	print(paste(base_message, 'more than 70 years'))
+    }
+  }
+}
+```
+
+
+
+
